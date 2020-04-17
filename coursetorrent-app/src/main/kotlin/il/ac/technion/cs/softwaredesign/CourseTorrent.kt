@@ -1,7 +1,8 @@
 package il.ac.technion.cs.softwaredesign
 
-import il.ac.technion.cs.softwaredesign.il.ac.technion.cs.softwaredesign.Database
-import il.ac.technion.cs.softwaredesign.il.ac.technion.cs.softwaredesign.IDatabase
+
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 
 
 /**
@@ -10,7 +11,7 @@ import il.ac.technion.cs.softwaredesign.il.ac.technion.cs.softwaredesign.IDataba
  * Currently specified:
  * + Parsing torrent metainfo files (".torrent" files)
  */
-class CourseTorrent(database: IDatabase = Database(), bencoder: IBencoder = Bencoder()) {
+class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder = Bencoder()) {
 
 
     /**
@@ -26,8 +27,13 @@ class CourseTorrent(database: IDatabase = Database(), bencoder: IBencoder = Benc
      * @return The infohash of the torrent, i.e., the SHA-1 of the `info` key of [torrent].
      */
     fun load(torrent: ByteArray): String {
-
-
+//        if (!bencoder.checkValidMetaInfo(torrent))
+//            throw IllegalArgumentException()
+        var infohash = bencoder.getInfoHash(torrent)
+//        if(database.contains(infohash))
+//            throw IllegalStateException()
+//        database.write(infohash, bencoder.getBencodedAnnounceList(torrent))
+        return infohash
     }
 
     /**
@@ -37,7 +43,11 @@ class CourseTorrent(database: IDatabase = Database(), bencoder: IBencoder = Benc
      *
      * @throws IllegalArgumentException If [infohash] is not loaded.
      */
-    fun unload(infohash: String): Unit = TODO("Implement me!")
+    fun unload(infohash: String): Unit {
+        if(!database.contains(infohash))
+            throw IllegalStateException()
+        database.delete(infohash)
+    }
 
     /**
      * Return the announce URLs for the loaded torrent identified by [infohash].
@@ -52,5 +62,10 @@ class CourseTorrent(database: IDatabase = Database(), bencoder: IBencoder = Benc
      * @throws IllegalArgumentException If [infohash] is not loaded.
      * @return Tier lists of announce URLs.
      */
-    fun announces(infohash: String): List<List<String>> = TODO("Implement me!")
+    fun announces(infohash: String): List<List<String>> {
+        if(!database.contains(infohash))
+            throw IllegalStateException()
+        var bencodedAnnounceList = database.read(infohash)
+        return bencoder.decodeAnnounceList(bencodedAnnounceList)
+    }
 }
