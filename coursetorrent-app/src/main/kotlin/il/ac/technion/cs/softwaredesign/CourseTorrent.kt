@@ -1,12 +1,18 @@
 package il.ac.technion.cs.softwaredesign
 
+import il.ac.technion.cs.softwaredesign.il.ac.technion.cs.softwaredesign.Database
+import il.ac.technion.cs.softwaredesign.il.ac.technion.cs.softwaredesign.IDatabase
+
+
 /**
  * This is the class implementing CourseTorrent, a BitTorrent client.
  *
  * Currently specified:
  * + Parsing torrent metainfo files (".torrent" files)
  */
-class CourseTorrent {
+class CourseTorrent(database: IDatabase = Database(), bencoder: IBencoder = Bencoder()) {
+
+
     /**
      * Load in the torrent metainfo file from [torrent]. The specification for these files can be found here:
      * [Metainfo File Structure](https://wiki.theory.org/index.php/BitTorrentSpecification#Metainfo_File_Structure).
@@ -19,7 +25,10 @@ class CourseTorrent {
      * @throws IllegalStateException If the infohash of [torrent] is already loaded.
      * @return The infohash of the torrent, i.e., the SHA-1 of the `info` key of [torrent].
      */
-    fun load(torrent: ByteArray): String = TODO("Implement me!")
+    fun load(torrent: ByteArray): String {
+
+
+    }
 
     /**
      * Remove the torrent identified by [infohash] from the system.
