@@ -5,10 +5,9 @@ import be.adaxisoft.bencode.BEncoder
 import java.nio.charset.Charset
 import java.security.MessageDigest
 
-fun ByteArray.toHex(): String {
-    return joinToString("") { "%02x".format(it) }
-}
+
 class Bencoder : IBencoder {
+
 
     override fun getInfoHash(torrent: ByteArray): String {
         var b = BDecoder(torrent.inputStream())
@@ -35,5 +34,9 @@ class Bencoder : IBencoder {
 
     override fun getBencodedAnnounceList(torrent: ByteArray): String {
         TODO("Not yet implemented")
+    }
+
+    fun ByteArray.toHex(): String {
+        return joinToString("") { "%02x".format(it) }
     }
 }
