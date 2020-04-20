@@ -11,6 +11,8 @@ import java.lang.IllegalStateException
  * Currently specified:
  * + Parsing torrent metainfo files (".torrent" files)
  */
+
+//TODO: ask: can we change the implementation of the class???
 class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder = Bencoder()) {
 
 
@@ -27,6 +29,8 @@ class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder
      * @return The infohash of the torrent, i.e., the SHA-1 of the `info` key of [torrent].
      */
     fun load(torrent: ByteArray): String {
+
+        //checked on Bencoder - see if OK
 //        if (!bencoder.checkValidMetaInfo(torrent))
 //            throw IllegalArgumentException()
         var infohash = bencoder.getInfoHash(torrent)
