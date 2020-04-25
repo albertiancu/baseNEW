@@ -29,11 +29,15 @@ class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder
     fun load(torrent: ByteArray): String {
 //        if (!bencoder.checkValidMetaInfo(torrent))
 //            throw IllegalArgumentException()
-        var infohash = bencoder.getInfoHash(torrent)
+//        var infohash = bencoder.getInfoHash(torrent)
 //        if(database.contains(infohash))
 //            throw IllegalStateException()
-//        database.write(infohash, bencoder.getBencodedAnnounceList(torrent))
-        return infohash
+//      database.write(infohash, bencoder.getBencodedAnnounceList(torrent))
+
+      val x = bencoder.getBencodedAnnounceList(torrent)
+      val y = bencoder.decodeAnnounceList(x)
+      //  return infohash
+        return bencoder.getInfoHash(torrent)
     }
 
     /**
