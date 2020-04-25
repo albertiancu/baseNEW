@@ -10,5 +10,6 @@ interface IBencoder {
      */
     fun decodeAnnounceList(bencodedAnnounceList: String): List<List<String>>
     fun getBencodedAnnounceList(torrent: ByteArray): String
-
+//
+//    fun getAnnounce(torrent: ByteArray): String
 }

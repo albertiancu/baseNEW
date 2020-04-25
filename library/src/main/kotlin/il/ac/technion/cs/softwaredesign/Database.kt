@@ -7,7 +7,7 @@ class Database : IDatabase {
     }
 
     override fun write(key: String, value: String) {
-        TODO("Not yet implemented")
+        il.ac.technion.cs.softwaredesign.storage.write(key.toByteArray(),value.toByteArray())
     }
 
     override fun read(key: String) :String{
