@@ -1,6 +1,7 @@
 package il.ac.technion.cs.softwaredesign
 
 
+import java.lang.Exception
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 
@@ -11,6 +12,8 @@ import java.lang.IllegalStateException
  * Currently specified:
  * + Parsing torrent metainfo files (".torrent" files)
  */
+
+//TODO: ask: can we change the implementation of the class???
 class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder = Bencoder()) {
 
 
@@ -27,17 +30,30 @@ class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder
      * @return The infohash of the torrent, i.e., the SHA-1 of the `info` key of [torrent].
      */
     fun load(torrent: ByteArray): String {
+
+        var infohash = ""
+
+        try {
+            infohash = bencoder.getInfoHash(torrent)
+        }
+        catch (e: Exception) {
+            throw e;
+        }
+
+        //checked on Bencoder - see if OK
 //        if (!bencoder.checkValidMetaInfo(torrent))
 //            throw IllegalArgumentException()
-//        var infohash = bencoder.getInfoHash(torrent)
-//        if(database.contains(infohash))
-//            throw IllegalStateException()
-//      database.write(infohash, bencoder.getBencodedAnnounceList(torrent))
 
-      val x = bencoder.getBencodedAnnounceList(torrent)
-      val y = bencoder.decodeAnnounceList(x)
-      //  return infohash
-        return bencoder.getInfoHash(torrent)
+        if(database.contains(infohash))
+            throw IllegalStateException()
+
+
+        database.write(infohash, bencoder.getBencodedAnnounceList(torrent))
+
+//        val x = bencoder.getBencodedAnnounceList(torrent)
+//        val y = bencoder.decodeAnnounceList(x)
+
+        return infohash
     }
 
     /**
@@ -49,7 +65,7 @@ class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder
      */
     fun unload(infohash: String): Unit {
         if(!database.contains(infohash))
-            throw IllegalStateException()
+            throw IllegalArgumentException()
         database.delete(infohash)
     }
 
@@ -67,9 +83,16 @@ class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder
      * @return Tier lists of announce URLs.
      */
     fun announces(infohash: String): List<List<String>> {
-        if(!database.contains(infohash))
-            throw IllegalStateException()
+//        if(!database.contains(infohash))
+//            throw IllegalStateException()
         var bencodedAnnounceList = database.read(infohash)
-        return bencoder.decodeAnnounceList(bencodedAnnounceList)
+
+        if (bencodedAnnounceList === null) {
+            throw IllegalArgumentException()
+        }
+        else {
+            return bencoder.decodeAnnounceList(bencodedAnnounceList)
+        }
+
     }
 }

@@ -3,12 +3,16 @@ package il.ac.technion.cs.softwaredesign
 import be.adaxisoft.bencode.BDecoder
 import be.adaxisoft.bencode.BEncodedValue
 import be.adaxisoft.bencode.BEncoder
+import java.lang.Exception
+import java.lang.IllegalArgumentException
+import java.nio.charset.Charset
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 
 
 class Bencoder : IBencoder {
+
 
     private fun hashWithSHA1(byteArray: ByteArray): String {
         val digest = MessageDigest.getInstance("SHA-1")
@@ -18,36 +22,33 @@ class Bencoder : IBencoder {
     }
 
     override fun getInfoHash(torrent: ByteArray): String {
-        val decoder = BDecoder(torrent.inputStream())
-        val outerDictionary = decoder.decodeMap().map
-        val infoDictionary = outerDictionary["info"]!!.map
-        val bencodedInfoMap = BEncoder.encode(infoDictionary)
-        val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
-        bencodedInfoMap.get(bencodedInfoByteArray)
-        return hashWithSHA1(bencodedInfoByteArray)
-    }
-
-    override fun checkValidMetaInfo(torrent: ByteArray): Boolean {
-        TODO("Not yet implemented")
-
-    }
-
-    override fun decodeAnnounceList(bencodedAnnounceList: String): List<List<String>> {
-        val announceListByteArray = bencodedAnnounceList.toByteArray(Charsets.UTF_8)
-        val decoder = BDecoder(announceListByteArray.inputStream())
-        val outerListOfBEncoded = decoder.decodeList().list
-        val outerList = ArrayList<ArrayList<String>>()
-        var innerList : ArrayList<String> = ArrayList()
-        var innerBEncodedList: ArrayList<BEncodedValue>
-        for ( lst in outerListOfBEncoded){
-            innerBEncodedList = lst.list as ArrayList<BEncodedValue>
-            for( v in innerBEncodedList){
-                innerList.add(v.string)
-            }
-            outerList.add(innerList)
-            innerList = ArrayList()
+        try {
+            val decoder = BDecoder(torrent.inputStream())
+            val outerDictionary = decoder.decodeMap().map
+            val infoDictionary = outerDictionary["info"]!!.map
+            val bencodedInfoMap = BEncoder.encode(infoDictionary)
+            val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
+            bencodedInfoMap.get(bencodedInfoByteArray)
+            return hashWithSHA1(bencodedInfoByteArray)
         }
-        return outerList
+        catch (e: Exception) {
+            throw IllegalArgumentException();
+        }
+
+    }
+
+//    override fun checkValidMetaInfo(torrent: ByteArray): Boolean {
+//        TODO("Not yet implemented")
+//    }
+
+
+    override fun getAnnounce(torrent: ByteArray): String {
+        TODO("not implemented")
+    }
+
+
+    override fun getAnnounces(torrent: ByteArray): List<String> {
+        TODO("need to implement")
     }
 
 //     override fun getAnnounce(torrent: ByteArray): String {
@@ -98,6 +99,24 @@ class Bencoder : IBencoder {
         val bencodedResult = ByteArrayOutputStream()
         BEncoder.encode(resultBEncodedValue, bencodedResult)
         return bencodedResult.toString()
+    }
+
+    override fun decodeAnnounceList(bencodedAnnounceList: String): List<List<String>> {
+        val announceListByteArray = bencodedAnnounceList.toByteArray(Charsets.UTF_8)
+        val decoder = BDecoder(announceListByteArray.inputStream())
+        val outerListOfBEncoded = decoder.decodeList().list
+        val outerList = ArrayList<ArrayList<String>>()
+        var innerList : ArrayList<String> = ArrayList()
+        var innerBEncodedList: ArrayList<BEncodedValue>
+        for ( lst in outerListOfBEncoded){
+            innerBEncodedList = lst.list as ArrayList<BEncodedValue>
+            for( v in innerBEncodedList){
+                innerList.add(v.string)
+            }
+            outerList.add(innerList)
+            innerList = ArrayList()
+        }
+        return outerList
     }
 
     fun ByteArray.toHex(): String {
