@@ -37,10 +37,6 @@ class Bencoder : IBencoder {
 
     }
 
-//    override fun checkValidMetaInfo(torrent: ByteArray): Boolean {
-//        TODO("Not yet implemented")
-//    }
-
 
     override fun getAnnounce(torrent: ByteArray): String {
         TODO("not implemented")
@@ -51,39 +47,6 @@ class Bencoder : IBencoder {
         TODO("need to implement")
     }
 
-//     override fun getAnnounce(torrent: ByteArray): String {
-//        try {
-//            var b = BDecoder(torrent.inputStream())
-//            var document = b.decodeMap();
-//            val announce = document.map["announce"]!!.bytes
-//
-//            val ann = String(announce);
-//            return ann;
-//
-//        }
-//        catch (e: Exception) {
-//            throw IllegalArgumentException();
-//        }
-//
-//    }
-
-//    private fun wrapWithDoubleLists(innerBEncodedValue : BEncodedValue): BEncodedValue{
-//        val outerList = ArrayList<BEncodedValue>()
-//        val innerList = ArrayList<BEncodedValue>()
-//        innerList.add(innerBEncodedValue)
-//
-//        val bencodedInnerList = ByteArrayOutputStream()
-//        BEncoder.encode(innerList, bencodedInnerList)
-//
-//        val innerListBEncodedValue = BDecoder.bdecode(ByteBuffer.wrap(bencodedInnerList.toByteArray()))
-//
-//        outerList.add(innerListBEncodedValue)
-//        val bencodedOuterList = ByteArrayOutputStream()
-//        BEncoder.encode(outerList, bencodedOuterList)
-//        val outerListBEncodedValue = BDecoder.bdecode(ByteBuffer.wrap(bencodedOuterList.toByteArray()))
-//
-//        return outerListBEncodedValue
-//    }
 
     override fun getBencodedAnnounceList(torrent: ByteArray): String {
         val decoder = BDecoder(torrent.inputStream())

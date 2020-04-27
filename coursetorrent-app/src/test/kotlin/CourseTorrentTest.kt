@@ -17,6 +17,7 @@ class CourseTorrentTest {
     private val mockDatabase = mockk<IDatabase>(relaxed = true)
     private val mockBencoder = mockk<IBencoder>(relaxed = true)
     private val courseTorrent = CourseTorrent(mockDatabase, mockBencoder)
+
     @Test
     fun `loading an already loaded torrent throws exception`(){
         every {mockDatabase.read(any())} returns "value"
@@ -27,6 +28,7 @@ class CourseTorrentTest {
         every {mockBencoder.getInfoHash(any())} throws IllegalArgumentException()
         assertThrows<IllegalArgumentException>{courseTorrent.load(debian)}
     }
+
     @Test
     fun `after loading torrent its bencoded announce-list is available under its infohash key`(){
         every {mockBencoder.getInfoHash(debian)} returns "infohash"
@@ -34,9 +36,7 @@ class CourseTorrentTest {
         every {mockBencoder.getBencodedAnnounceList(debian)} returns "announce-list"
         courseTorrent.load(debian)
         verify(exactly = 1) {mockDatabase.write(key = "infohash", value = "announce-list")}
-
     }
-
 
     @Test
     fun `unloading a torrent that wasn't loaded throws exception`(){
