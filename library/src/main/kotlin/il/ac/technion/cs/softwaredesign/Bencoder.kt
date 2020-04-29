@@ -11,8 +11,10 @@ import java.nio.ByteBuffer
 import java.security.MessageDigest
 
 
+
 class Bencoder : IBencoder {
 
+    val charset = Charsets.ISO_8859_1
 
     private fun hashWithSHA1(byteArray: ByteArray): String {
         val digest = MessageDigest.getInstance("SHA-1")
@@ -36,6 +38,29 @@ class Bencoder : IBencoder {
         }
 
     }
+
+//    override fun getInfoHash(torrent: ByteArray): String {
+//        try {
+//            val decoder = Ben(torrent.toString(charset))
+//            val outerDictionary = decoder.decode()
+//            val asMap = outerDictionary as HashMap<String, Any>
+//
+//            val infoMap = asMap["info"]
+//
+//            if (infoMap === null)
+//                throw IllegalArgumentException();
+//
+//            val bencodedInfoMap = Ben.encodeStr(infoMap).toByteArray()
+////            val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
+////            bencodedInfoMap.get(bencodedInfoByteArray)
+//            val ans = hashWithSHA1(bencodedInfoMap)
+//            return ans
+//        }
+//        catch (e: Exception) {
+//            throw IllegalArgumentException();
+//        }
+//
+//    }
 
 
     override fun getAnnounce(torrent: ByteArray): String {
