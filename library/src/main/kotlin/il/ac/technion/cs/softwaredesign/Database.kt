@@ -12,9 +12,11 @@ class Database : IDatabase {
 
     override fun read(key: String) : String?{
         val value = il.ac.technion.cs.softwaredesign.storage.read(key.toByteArray());
-        if(value?.size === 0)
+        if (value === null)
             return null
-        return value?.toString(charset);
+        if(value.size === 0)
+            return null
+        return value.toString(charset);
     }
 
     override fun delete(key: String) {
