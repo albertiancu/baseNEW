@@ -1,3 +1,5 @@
+import be.adaxisoft.bencode.BDecoder
+import be.adaxisoft.bencode.BEncoder
 import java.nio.charset.Charset
 import com.natpryce.hamkrest.allElements
 import com.natpryce.hamkrest.assertion.assertThat
@@ -7,7 +9,9 @@ import com.natpryce.hamkrest.hasSize
 import il.ac.technion.cs.softwaredesign.Bencoder
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.lang.Exception
 import java.lang.IllegalArgumentException
+import java.security.MessageDigest
 
 
 class BencoderTest {
@@ -45,6 +49,8 @@ class BencoderTest {
     }
 
 
+
+
     @Test
     fun `getBencodedAnnounceList returns correct value for debian`(){
         //var bencoder = Bencoder()
@@ -64,6 +70,51 @@ class BencoderTest {
         assertThat(b, allElements(hasSize(equalTo(1))))
         assertThat(b, hasSize(equalTo(1)))
         assertThat(b, allElements(hasElement("http://bttracker.debian.org:6969/announce")))
+    }
+
+
+    @Test
+    fun timeTest() {
+
+        var decoder : BDecoder =BDecoder(debian.inputStream())
+        var res : String
+        for( i in 1 .. 1000000)
+
+            bencoder.getInfoHash(debian)
+//            decoder = BDecoder(debian.inputStream())
+//            val outerDictionary = decoder.decodeMap().map
+//            val infoDictionary = outerDictionary["info"]!!.map
+//            val bencodedInfoMap = BEncoder.encode(infoDictionary)
+//            val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
+//            bencodedInfoMap.get(bencodedInfoByteArray)
+//            hashWithSHA1(bencodedInfoByteArray)
+
+
+    }
+
+    @Test
+    fun timeTest1() {
+
+        var decoder = BDecoder(debian.inputStream())
+        for( i in 1 .. 1000000) {
+            decoder = BDecoder(debian.inputStream())
+            val outerDictionary = decoder.decodeMap().map
+//            val infoDictionary = outerDictionary["info"]!!.map
+//            val bencodedInfoMap = BEncoder.encode(infoDictionary)
+//            val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
+//            bencodedInfoMap.get(bencodedInfoByteArray)
+        }
+
+    }
+    private fun hashWithSHA1(byteArray: ByteArray): String {
+        val digest = MessageDigest.getInstance("SHA-1")
+        digest.reset()
+        val infohash = digest.digest(byteArray)
+        return infohash.toHex()
+    }
+
+    fun ByteArray.toHex(): String {
+        return joinToString("") { "%02x".format(it) }
     }
 
 }

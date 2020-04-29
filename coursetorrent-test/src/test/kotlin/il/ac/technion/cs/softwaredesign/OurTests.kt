@@ -132,4 +132,24 @@ class OurTests {
         assertThat(announces, allElements(hasElement("http://bttracker.debian.org:6969/announce")))
     }
 
+//
+//    @Test
+//    fun timeTest(){
+//        mockkStatic("il.ac.technion.cs.softwaredesign.storage.SecureStorageKt")
+//        every { read(capture(keySlot)) } answers
+//                { if (!mockDB.containsKey(String(keySlot.captured))) null
+//                else (mockDB[String(keySlot.captured)])?.toByteArray() }
+//        every { write(capture(keySlot), capture(valueSlot)) } answers
+//                {mockDB.put(String(keySlot.captured), String(valueSlot.captured))}
+//
+//        for(i in 1..100000){
+//            var infohash = torrent.load(debian)
+//            mockDB[infohash + i.toString()] = mockDB[infohash] ?: ""
+//            mockDB[infohash] = ""
+//        }
+//
+//
+//
+//    }
+
 }

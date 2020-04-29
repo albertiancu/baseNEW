@@ -22,7 +22,7 @@ class Bencoder : IBencoder {
     }
 
     override fun getInfoHash(torrent: ByteArray): String {
-        try {
+
             val decoder = BDecoder(torrent.inputStream())
             val outerDictionary = decoder.decodeMap().map
             val infoDictionary = outerDictionary["info"]!!.map
@@ -30,10 +30,8 @@ class Bencoder : IBencoder {
             val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
             bencodedInfoMap.get(bencodedInfoByteArray)
             return hashWithSHA1(bencodedInfoByteArray)
-        }
-        catch (e: Exception) {
-            throw IllegalArgumentException();
-        }
+
+
 
     }
 
