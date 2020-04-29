@@ -74,6 +74,44 @@ class OurTests {
 
 
     @Test
+    fun `unload existing infohash deletes the infohas`() {
+
+        mockkStatic("il.ac.technion.cs.softwaredesign.storage.SecureStorageKt")
+        every { read(capture(keySlot)) } answers
+                { if (!mockDB.containsKey(String(keySlot.captured))) null
+                else (mockDB[String(keySlot.captured)])?.toByteArray() }
+
+        every { write(capture(keySlot), capture(valueSlot)) } answers
+                {mockDB.put(String(keySlot.captured), String(valueSlot.captured))}
+
+        mockDB["5a8062c076fa85e8056451c0d9aa04349ae27909"] = "some value"
+
+        torrent.unload("5a8062c076fa85e8056451c0d9aa04349ae27909")
+        assertThat(mockDB["5a8062c076fa85e8056451c0d9aa04349ae27909"], equalTo(""))
+
+    }
+
+
+    @Test
+    fun `unload unexisting infohash throws exception`() {
+
+        mockkStatic("il.ac.technion.cs.softwaredesign.storage.SecureStorageKt")
+        every { read(capture(keySlot)) } answers
+                { if (!mockDB.containsKey(String(keySlot.captured))) null
+                else (mockDB[String(keySlot.captured)])?.toByteArray() }
+
+        every { write(capture(keySlot), capture(valueSlot)) } answers
+                {mockDB.put(String(keySlot.captured), String(valueSlot.captured))}
+
+        mockDB["5a8062c076fa85e8056451c0d9aa04349ae27909"] = ""
+
+        assertThrows<IllegalArgumentException> { torrent.unload("5a8062c076fa85e8056451c0d9aa04349ae27909") }
+        assertThrows<IllegalArgumentException> { torrent.unload("some random key") }
+
+    }
+
+
+    @Test
     fun `after load, announce is correct`() {
 
         mockDB["5a8062c076fa85e8056451c0d9aa04349ae27909"] = "ll41:http://bttracker.debian.org:6969/announceee"

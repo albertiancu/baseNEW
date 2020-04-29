@@ -11,8 +11,10 @@ import java.nio.ByteBuffer
 import java.security.MessageDigest
 
 
+
 class Bencoder : IBencoder {
 
+    val charset = Charsets.ISO_8859_1
 
     private fun hashWithSHA1(byteArray: ByteArray): String {
         val digest = MessageDigest.getInstance("SHA-1")
@@ -35,8 +37,27 @@ class Bencoder : IBencoder {
 
     }
 
-//    override fun checkValidMetaInfo(torrent: ByteArray): Boolean {
-//        TODO("Not yet implemented")
+//    override fun getInfoHash(torrent: ByteArray): String {
+//        try {
+//            val decoder = Ben(torrent.toString(charset))
+//            val outerDictionary = decoder.decode()
+//            val asMap = outerDictionary as HashMap<String, Any>
+//
+//            val infoMap = asMap["info"]
+//
+//            if (infoMap === null)
+//                throw IllegalArgumentException();
+//
+//            val bencodedInfoMap = Ben.encodeStr(infoMap).toByteArray()
+////            val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
+////            bencodedInfoMap.get(bencodedInfoByteArray)
+//            val ans = hashWithSHA1(bencodedInfoMap)
+//            return ans
+//        }
+//        catch (e: Exception) {
+//            throw IllegalArgumentException();
+//        }
+//
 //    }
 
 
@@ -49,39 +70,6 @@ class Bencoder : IBencoder {
         TODO("need to implement")
     }
 
-//     override fun getAnnounce(torrent: ByteArray): String {
-//        try {
-//            var b = BDecoder(torrent.inputStream())
-//            var document = b.decodeMap();
-//            val announce = document.map["announce"]!!.bytes
-//
-//            val ann = String(announce);
-//            return ann;
-//
-//        }
-//        catch (e: Exception) {
-//            throw IllegalArgumentException();
-//        }
-//
-//    }
-
-//    private fun wrapWithDoubleLists(innerBEncodedValue : BEncodedValue): BEncodedValue{
-//        val outerList = ArrayList<BEncodedValue>()
-//        val innerList = ArrayList<BEncodedValue>()
-//        innerList.add(innerBEncodedValue)
-//
-//        val bencodedInnerList = ByteArrayOutputStream()
-//        BEncoder.encode(innerList, bencodedInnerList)
-//
-//        val innerListBEncodedValue = BDecoder.bdecode(ByteBuffer.wrap(bencodedInnerList.toByteArray()))
-//
-//        outerList.add(innerListBEncodedValue)
-//        val bencodedOuterList = ByteArrayOutputStream()
-//        BEncoder.encode(outerList, bencodedOuterList)
-//        val outerListBEncodedValue = BDecoder.bdecode(ByteBuffer.wrap(bencodedOuterList.toByteArray()))
-//
-//        return outerListBEncodedValue
-//    }
 
     override fun getBencodedAnnounceList(torrent: ByteArray): String {
         val decoder = BDecoder(torrent.inputStream())
