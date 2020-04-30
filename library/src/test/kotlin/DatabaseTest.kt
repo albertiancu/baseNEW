@@ -4,11 +4,10 @@ import il.ac.technion.cs.softwaredesign.Database
 import il.ac.technion.cs.softwaredesign.storage.read
 import il.ac.technion.cs.softwaredesign.storage.write
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.lang.IllegalStateException
 
 class DatabaseTest {
 
@@ -80,6 +79,33 @@ class DatabaseTest {
 
         database.delete("bbb")
         assertThat(database.read("bbb"), com.natpryce.hamkrest.isNullOrBlank)
+    }
+
+    @Test
+    fun `test after adding cache`(){
+        mockkStatic("il.ac.technion.cs.softwaredesign.storage.SecureStorageKt")
+        every { write(capture(keySlot), capture(valueSlot)) } answers
+                {mockDB.put(String(keySlot.captured), String(valueSlot.captured))}
+        every { read(capture(keySlot)) } answers
+                { if (!mockDB.containsKey(String(keySlot.captured))) null
+                else (mockDB[String(keySlot.captured)])?.toByteArray() }
+
+        database.write("key1","val1");
+
+        assertEquals("val1", database.read("key1"))
+
+        database.delete("key1")
+        assertEquals(null,database.read("key1"))
+
+        database.write("key1", "val1");
+        assertEquals("val1", database.read("key1"))
+
+        val database2 = Database()
+        assertEquals("val1", database2.read("key1"))
+
+
+
+
     }
 
 }

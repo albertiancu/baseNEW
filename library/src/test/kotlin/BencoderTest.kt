@@ -1,3 +1,5 @@
+import be.adaxisoft.bencode.BDecoder
+import be.adaxisoft.bencode.BEncoder
 import java.nio.charset.Charset
 import com.natpryce.hamkrest.allElements
 import com.natpryce.hamkrest.assertion.assertThat
@@ -7,7 +9,9 @@ import com.natpryce.hamkrest.hasSize
 import il.ac.technion.cs.softwaredesign.Bencoder
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.lang.Exception
 import java.lang.IllegalArgumentException
+import java.security.MessageDigest
 
 
 class BencoderTest {
@@ -45,6 +49,8 @@ class BencoderTest {
     }
 
 
+
+
     @Test
     fun `getBencodedAnnounceList returns correct value for debian`(){
         //var bencoder = Bencoder()
@@ -65,5 +71,9 @@ class BencoderTest {
         assertThat(b, hasSize(equalTo(1)))
         assertThat(b, allElements(hasElement("http://bttracker.debian.org:6969/announce")))
     }
+
+
+
+
 
 }

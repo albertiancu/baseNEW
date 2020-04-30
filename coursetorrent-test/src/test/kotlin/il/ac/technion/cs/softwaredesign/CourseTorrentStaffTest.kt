@@ -18,15 +18,15 @@ class CourseTorrentStaffTest {
 
         assertThat(infohash, equalTo("5a8062c076fa85e8056451c0d9aa04349ae27909"))
     }
-//
-//    @Test
-//    fun `after load, announce is correct`() {
-//        val infohash = torrent.load(debian)
-//
-//        val announces = torrent.announces(infohash)
-//
-//        assertThat(announces, allElements(hasSize(equalTo(1))))
-//        assertThat(announces, hasSize(equalTo(1)))
-//        assertThat(announces, allElements(hasElement("http://bttracker.debian.org:6969/announce")))
-//    }
+
+    @Test
+    fun `after load, announce is correct`() {
+        val infohash = torrent.load(debian)
+
+        val announces = torrent.announces(infohash)
+
+        assertThat(announces, allElements(hasSize(equalTo(1))))
+        assertThat(announces, hasSize(equalTo(1)))
+        assertThat(announces, allElements(hasElement("http://bttracker.debian.org:6969/announce")))
+    }
 }

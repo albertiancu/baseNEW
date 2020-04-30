@@ -26,12 +26,12 @@ class OurTests {
     val valueSlot = slot<ByteArray>()
     val database = Database()
 
-    @Test
-    fun `after load, infohash calculated correctly`() {
-        val infohash = torrent.load(debian)
-
-        assertThat(infohash, equalTo("5a8062c076fa85e8056451c0d9aa04349ae27909"))
-    }
+//    @Test
+//    fun `after load, infohash calculated correctly`() {
+//        val infohash = torrent.load(debian)
+//
+//        assertThat(infohash, equalTo("5a8062c076fa85e8056451c0d9aa04349ae27909"))
+//    }
 
     @Test
     fun `after load of incorrect file, exception is thrown`() {
@@ -169,5 +169,25 @@ class OurTests {
         assertThat(announces, hasSize(equalTo(1)))
         assertThat(announces, allElements(hasElement("http://bttracker.debian.org:6969/announce")))
     }
+
+//
+//    @Test
+//    fun timeTest(){
+//        mockkStatic("il.ac.technion.cs.softwaredesign.storage.SecureStorageKt")
+//        every { read(capture(keySlot)) } answers
+//                { if (!mockDB.containsKey(String(keySlot.captured))) null
+//                else (mockDB[String(keySlot.captured)])?.toByteArray() }
+//        every { write(capture(keySlot), capture(valueSlot)) } answers
+//                {mockDB.put(String(keySlot.captured), String(valueSlot.captured))}
+//
+//        for(i in 1..100000){
+//            var infohash = torrent.load(debian)
+//            mockDB[infohash + i.toString()] = mockDB[infohash] ?: ""
+//            mockDB[infohash] = ""
+//        }
+//
+//
+//
+//    }
 
 }
