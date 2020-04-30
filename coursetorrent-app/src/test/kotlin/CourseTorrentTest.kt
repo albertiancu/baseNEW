@@ -1,13 +1,5 @@
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
-import il.ac.technion.cs.softwaredesign.CourseTorrent
-import il.ac.technion.cs.softwaredesign.FakeDatabase
-import il.ac.technion.cs.softwaredesign.IBencoder
-import il.ac.technion.cs.softwaredesign.IDatabase
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
-import org.junit.jupiter.api.Assertions
+import il.ac.technion.cs.softwaredesign.*
+import io.mockk.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -85,4 +77,6 @@ class CourseTorrentTest {
 
         assertEquals(ArrayList<ArrayList<String>>(), courseTorrent.announces("infohash"))
     }
+
+
 }

@@ -26,12 +26,12 @@ class OurTests {
     val valueSlot = slot<ByteArray>()
     val database = Database()
 
-    @Test
-    fun `after load, infohash calculated correctly`() {
-        val infohash = torrent.load(debian)
-
-        assertThat(infohash, equalTo("5a8062c076fa85e8056451c0d9aa04349ae27909"))
-    }
+//    @Test
+//    fun `after load, infohash calculated correctly`() {
+//        val infohash = torrent.load(debian)
+//
+//        assertThat(infohash, equalTo("5a8062c076fa85e8056451c0d9aa04349ae27909"))
+//    }
 
     @Test
     fun `after load of incorrect file, exception is thrown`() {

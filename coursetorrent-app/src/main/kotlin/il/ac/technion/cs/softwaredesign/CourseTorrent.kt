@@ -13,7 +13,6 @@ import java.lang.IllegalStateException
  * + Parsing torrent metainfo files (".torrent" files)
  */
 
-//TODO: ask: can we change the implementation of the class???
 class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder = Bencoder()) {
 
     /**
@@ -38,9 +37,6 @@ class CourseTorrent(val database: IDatabase = Database(),val bencoder: IBencoder
         catch (e: Exception) {
             throw e;
         }
-        //checked on Bencoder - see if OK
-//        if (!bencoder.checkValidMetaInfo(torrent))
-//            throw IllegalArgumentException()
         if(database.read(infohash) !== null)
             throw IllegalStateException()
         database.write(infohash, bencoder.getBencodedAnnounceList(torrent))

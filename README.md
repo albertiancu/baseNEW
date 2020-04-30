@@ -1,22 +1,26 @@
 # CourseApp: Assignment 0
 
 ## Authors
-* Firstname McLastname, ID number
-* Firstnamey Lastnameson, ID number
+* Michael Landver, 204749022
+* Albert Iancu, 322073453
 
 ## Notes
 
 ### Implementation Summary
-Short summary of your implementation, including data structures used, design choices made, and
-a short tour of the class hierarchy you created.
+CourseTorrent depends on IBencoder and IDatabase interfaces. Implementations of those interfaces get injected into its constructor. 
+We have a Bencoder class, responsible for all bencoding functions, and a Database class responsible for storing information persistently.
 
 ### Testing Summary
-Short summary describing the ways you chose to test your code.
+CourseTorrent testing:
 
+We made a 'fake' of the IDatabase interface in order to test CourseTorrent without depending on a real database. And we used a mock IBencoder in order to configure IBencoder's method calls that CourseTorrent uses.
+
+Bencoder testing:
+This class has no dependencies so it was simple to test.
+
+Database testing:
+This class depends on SecureStorage and we used static mocking in order to configure the read and write methods.
 ### Difficulties
-Please list any technological difficulties you had while working on this assignment, especially
-with the tools used: Kotlin, JUnit, MockK, and Gradle.
 
 ### Feedback
-Put any feedback you may have for this assignment here. This **will** be read by the course staff,
-and may influence future assignments!
+Too much time was spent on low level stuff like hash functions, decoding, and unicode formats and not enough on Software Design.

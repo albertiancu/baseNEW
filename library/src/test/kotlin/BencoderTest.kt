@@ -73,48 +73,7 @@ class BencoderTest {
     }
 
 
-    @Test
-    fun timeTest() {
-
-        var decoder : BDecoder =BDecoder(debian.inputStream())
-        var res : String
-        for( i in 1 .. 1000000)
-
-            bencoder.getInfoHash(debian)
-//            decoder = BDecoder(debian.inputStream())
-//            val outerDictionary = decoder.decodeMap().map
-//            val infoDictionary = outerDictionary["info"]!!.map
-//            val bencodedInfoMap = BEncoder.encode(infoDictionary)
-//            val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
-//            bencodedInfoMap.get(bencodedInfoByteArray)
-//            hashWithSHA1(bencodedInfoByteArray)
 
 
-    }
-
-    @Test
-    fun timeTest1() {
-
-        var decoder = BDecoder(debian.inputStream())
-        for( i in 1 .. 1000000) {
-            decoder = BDecoder(debian.inputStream())
-            val outerDictionary = decoder.decodeMap().map
-//            val infoDictionary = outerDictionary["info"]!!.map
-//            val bencodedInfoMap = BEncoder.encode(infoDictionary)
-//            val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
-//            bencodedInfoMap.get(bencodedInfoByteArray)
-        }
-
-    }
-    private fun hashWithSHA1(byteArray: ByteArray): String {
-        val digest = MessageDigest.getInstance("SHA-1")
-        digest.reset()
-        val infohash = digest.digest(byteArray)
-        return infohash.toHex()
-    }
-
-    fun ByteArray.toHex(): String {
-        return joinToString("") { "%02x".format(it) }
-    }
 
 }

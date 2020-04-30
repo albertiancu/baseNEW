@@ -1,20 +1,16 @@
 package il.ac.technion.cs.softwaredesign
-
 import be.adaxisoft.bencode.BDecoder
 import be.adaxisoft.bencode.BEncodedValue
 import be.adaxisoft.bencode.BEncoder
 import java.lang.Exception
 import java.lang.IllegalArgumentException
-import java.nio.charset.Charset
 import java.io.ByteArrayOutputStream
-import java.nio.ByteBuffer
 import java.security.MessageDigest
 
 
 
 class Bencoder : IBencoder {
 
-    val charset = Charsets.ISO_8859_1
 
     private fun hashWithSHA1(byteArray: ByteArray): String {
         val digest = MessageDigest.getInstance("SHA-1")
@@ -24,7 +20,7 @@ class Bencoder : IBencoder {
     }
 
     override fun getInfoHash(torrent: ByteArray): String {
-
+        try {
             val decoder = BDecoder(torrent.inputStream())
             val outerDictionary = decoder.decodeMap().map
             val infoDictionary = outerDictionary["info"]!!.map
@@ -32,43 +28,11 @@ class Bencoder : IBencoder {
             val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
             bencodedInfoMap.get(bencodedInfoByteArray)
             return hashWithSHA1(bencodedInfoByteArray)
-
-
-
+        } catch (e: Exception) {
+            throw IllegalArgumentException();
+        }
     }
 
-//    override fun getInfoHash(torrent: ByteArray): String {
-//        try {
-//            val decoder = Ben(torrent.toString(charset))
-//            val outerDictionary = decoder.decode()
-//            val asMap = outerDictionary as HashMap<String, Any>
-//
-//            val infoMap = asMap["info"]
-//
-//            if (infoMap === null)
-//                throw IllegalArgumentException();
-//
-//            val bencodedInfoMap = Ben.encodeStr(infoMap).toByteArray()
-////            val bencodedInfoByteArray = ByteArray(bencodedInfoMap.remaining())
-////            bencodedInfoMap.get(bencodedInfoByteArray)
-//            val ans = hashWithSHA1(bencodedInfoMap)
-//            return ans
-//        }
-//        catch (e: Exception) {
-//            throw IllegalArgumentException();
-//        }
-//
-//    }
-
-
-    override fun getAnnounce(torrent: ByteArray): String {
-        TODO("not implemented")
-    }
-
-
-    override fun getAnnounces(torrent: ByteArray): List<String> {
-        TODO("need to implement")
-    }
 
 
     override fun getBencodedAnnounceList(torrent: ByteArray): String {
@@ -79,7 +43,6 @@ class Bencoder : IBencoder {
             announceListBEncodedValue
         } else {
             val announceBEncodedValue = outerDictionary["announce"] ?: error("Torrent doesn't have 'announce' field")
-           // wrapWithDoubleLists(announceBEncodedValue)
             return "ll" + announceBEncodedValue.string.length.toString() +":" +announceBEncodedValue.string + "ee"
         }
         val bencodedResult = ByteArrayOutputStream()
